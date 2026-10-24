@@ -16,7 +16,7 @@ jobs:
       - name: Checkout do Repositório
         uses: actions/checkout@v4
 
-      - name: ⚙️ Configurar Node.js (v20)
+      - name: Configurar Node.js (v20)
         uses: actions/setup-node@v4
         with:
           node-version: 20
