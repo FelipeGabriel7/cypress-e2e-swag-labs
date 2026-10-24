@@ -141,7 +141,7 @@ describe("Home - Tela inicial, visualização única e ordenação de produtos",
     it("CT-HM-08 - Usuario com problema na visualização de imagens", () => {
       cy.get(".inventory_item").each((item) => {
         cy.wrap(item)
-          .find(".inventory_item_img")
+          .find(".inventory_item_img img")
           .should("have.attr", "src")
           .and("include", "sl-404");
       });

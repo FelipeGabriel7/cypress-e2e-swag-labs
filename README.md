@@ -1,10 +1,12 @@
 # 🛒 Swag Labs - Automação de Testes E2E com Cypress
 
-Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma de e-commerce [Sauce Demo (Swag Labs)](https://www.saucedemo.com/), focado em demonstrar arquitetura modular, boas práticas de Quality Assurance (QA), cobertura com BDD (Gherkin) e testes resilientes com Cypress.
+Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma de e-commerce [Sauce Demo (Swag Labs)](https://www.saucedemo.com/), focado em demonstrar arquitetura modular, boas práticas de Quality Assurance (QA), cobertura com BDD (Gherkin), relatórios visuais com **Allure Report** e pipeline de **Integração Contínua (CI/CD)** via **GitHub Actions**.
 
 [![Cypress](https://img.shields.io/badge/Cypress-16.2.0-04C38C?style=for-the-badge&logo=cypress&logoColor=white)](https://www.cypress.io/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/)
 [![Status](https://img.shields.io/badge/Cobertura_E2E-48.6%25_(18/37)-blue?style=for-the-badge)](./PROGRESSO_AUTOMACAO.md)
+[![Allure Report](https://img.shields.io/badge/Report-Allure-F28D1A?style=for-the-badge&logo=qameta&logoColor=white)](https://qameta.io/)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](./.github/workflows/e2e-tests.yml)
 
 ---
 
@@ -21,6 +23,37 @@ Status Geral: [█████████████░░░░░░░░�
 • Carrinho de Compras   : 0.0%  (0/5)  ⚪ PLANEJADO
 • Menu Lateral e Sessão : 0.0%  (0/5)  ⚪ PLANEJADO
 ```
+
+---
+
+## 🚀 Integração Contínua (CI/CD - GitHub Actions)
+
+O projeto conta com um workflow automatizado em [`.github/workflows/e2e-tests.yml`](./.github/workflows/e2e-tests.yml) que é disparado a cada `push` ou `pull_request` nos branches `main` e `master`:
+
+1. **Ambiente Limpo**: Executa em contêiner `ubuntu-latest` com Node.js v20.
+2. **Instalação Estrita**: Utiliza `npm ci` para garantir reprodução idêntica das dependências.
+3. **Execução Headless**: Roda todos os testes de ponta a ponta sem interface gráfica.
+4. **Relatório Allure**: Gera o `allure-report` automaticamente ao final da execução.
+5. **Armazenamento de Artefatos**: Publica o relatório do Allure e screenshots de falhas para download direto na aba *Actions* do GitHub.
+
+---
+
+## 📊 Relatórios Visuais com Allure Report
+
+O projeto utiliza a integração oficial **`allure-cypress`** da Qameta Software para geração de relatórios com gráficos, histórico e rastreabilidade:
+
+- **Gerar e abrir o relatório no navegador com servidor local:**
+  ```bash
+  npm run allure:serve
+  ```
+- **Gerar a pasta estática do relatório (`allure-report`):**
+  ```bash
+  npm run allure:generate
+  ```
+- **Abrir relatório estático já compilado:**
+  ```bash
+  npm run allure:open
+  ```
 
 ---
 
@@ -73,6 +106,9 @@ Status Geral: [█████████████░░░░░░░░�
 
 ```plaintext
 E2ESwagLabs/
+├── .github/
+│   └── workflows/
+│       └── e2e-tests.yml      # Pipeline CI/CD do GitHub Actions
 ├── cenarios/                  # Especificação BDD e Regras de Negócio
 │   ├── REGRAS_E_SISTEMA.md    # Documento de regras funcionais, rotas e perfis
 │   ├── 01_autenticacao.feature
@@ -90,13 +126,13 @@ E2ESwagLabs/
 │       ├── commands.js        # Comandos customizados reutilizáveis
 │       ├── messages.js        # Dicionário de mensagens de validação
 │       ├── routes.js          # Centralização das rotas do sistema
-│       └── e2e.js             # Configurações globais de suporte
+│       └── e2e.js             # Configurações globais de suporte e Allure
 ├── PROGRESSO_AUTOMACAO.md     # Dashboard com matriz de rastreabilidade de testes
 ├── CYPRESS_ESTUDOS.md         # Guia técnico e anotações de aprendizado
 ├── jsconfig.json              # Tipagem global do Cypress para VS Code
-├── cypress.config.js          # Configurações de execução do Cypress
-├── package.json               # Dependências e scripts npm
-├── .gitignore                 # Arquivos ignorados pelo Git
+├── cypress.config.js          # Configurações de execução do Cypress e Allure Reporter
+├── package.json               # Dependências, scripts npm e Allure CLI
+├── .gitignore                 # Arquivos ignorados pelo Git (node_modules, allure, etc)
 └── README.md                  # Documentação principal do repositório
 ```
 
@@ -126,11 +162,16 @@ npm install
   npm run cypress:open
   ```
 
-- **Modo Headless (Execução via terminal):**
+- **Modo Headless (Terminal):**
   ```bash
   npm test
   # ou
   npm run cypress:run
+  ```
+
+- **Visualizar Relatório Allure após os testes:**
+  ```bash
+  npm run allure:serve
   ```
 
 ---

@@ -1,8 +1,9 @@
 # Dependências
 node_modules/
 
-# docs
-PROGRESSO_AUTOMACAO.md
+# Allure Report
+allure-results/
+allure-report/
 
 # Cypress (arquivos gerados em execuções de testes)
 cypress/screenshots/
