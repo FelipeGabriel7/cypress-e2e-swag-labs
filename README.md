@@ -32,6 +32,7 @@ Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma
 
 ## 💡 Boas Práticas Aplicadas
 
+- **Especificação Viva em BDD (Gherkin)**: Matriz de cenários estruturada em formato BDD no arquivo `CENARIOS_BDD.md`, servindo de guia funcional para a automação.
 - **Seletores Baseados em Atributos de Teste**: Priorização de seletores com `[data-test="..."]`, garantindo robustez e imunidade a alterações de estilo CSS.
 - **Custom Commands**: Centralização de fluxos repetitivos no arquivo `commands.js`:
   - `cy.goPage()`: Navegação para a URL base.
@@ -54,6 +55,14 @@ E2ESwagLabs/
 │   └── support/
 │       ├── commands.js        # Comandos customizados reutilizáveis
 │       └── e2e.js             # Configurações globais de suporte
+├── cenarios/                  # Especificação BDD e Regras de Negócio
+│   ├── REGRAS_E_SISTEMA.md    # Documento de regras, rotas e perfis de usuário
+│   ├── 01_autenticacao.feature
+│   ├── 02_catalogo_produtos.feature
+│   ├── 03_carrinho.feature
+│   ├── 04_checkout.feature
+│   └── 05_menu_e_sessao.feature
+├── PROGRESSO_AUTOMACAO.md     # Checklist e métricas de cobertura dos testes
 ├── CYPRESS_ESTUDOS.md         # Documento detalhado de conceitos e aprendizados
 ├── cypress.config.js          # Configurações do Cypress
 ├── package.json               # Dependências e scripts de execução

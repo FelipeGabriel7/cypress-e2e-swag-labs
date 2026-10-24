@@ -1,11 +1,11 @@
 Cypress.Commands.add("loginUser", (user, password) => {
-  cy.get("[data-test='username']").type(user);
-  cy.get("[data-test='password']").type(password);
+  user ? cy.get("[data-test='username']").type(user) : "";
+  password ? cy.get("[data-test='password']").type(password) : "";
   cy.get("[value='Login']").click();
 });
 
-Cypress.Commands.add("goPage", () => {
-  cy.visit("https://www.saucedemo.com/");
+Cypress.Commands.add("goPage", (url = "https://www.saucedemo.com/") => {
+  cy.visit(url, { failOnStatusCode: false });
 });
 
 Cypress.Commands.add("pageIsVisible", () => {
