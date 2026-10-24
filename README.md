@@ -1,45 +1,65 @@
 # 🛒 Swag Labs - Automação de Testes E2E com Cypress
 
-Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma de e-commerce fictícia [Sauce Demo (Swag Labs)](https://www.saucedemo.com/), focado em demonstrar boas práticas de automação, escrita de testes limpos, reutilização de código e arquitetura modular.
+Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma de e-commerce [Sauce Demo (Swag Labs)](https://www.saucedemo.com/), focado em demonstrar arquitetura modular, boas práticas de Quality Assurance (QA), cobertura com BDD (Gherkin) e testes resilientes com Cypress.
+
+[![Cypress](https://img.shields.io/badge/Cypress-16.2.0-04C38C?style=for-the-badge&logo=cypress&logoColor=white)](https://www.cypress.io/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/)
+[![Status](https://img.shields.io/badge/Cobertura_E2E-35.1%25_(13/37)-blue?style=for-the-badge)](./PROGRESSO_AUTOMACAO.md)
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 📊 Dashboard de Progresso
 
-- **[Cypress](https://www.cypress.io/)** (v16+) - Framework de automação E2E
-- **[JavaScript (ES6+)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)** - Linguagem de programação
-- **Node.js** - Ambiente de execução JavaScript
+Os cenários de teste são baseados em especificações vivas escritas em **Gherkin (`.feature`)** na pasta [`cenarios/`](./cenarios/).  
+Para conferir a matriz completa com todos os casos de teste, acesse o [**PROGRESSO_AUTOMACAO.md**](./PROGRESSO_AUTOMACAO.md).
 
----
-
-## 🎯 Cenários de Teste Cobertos
-
-### 🔐 1. Autenticação (`cypress/e2e/login.cy.js`)
-- **Login com sucesso**: Autenticação com credenciais válidas e validação do carregamento da vitrine de produtos.
-- **Login com usuário bloqueado**: Validação de mensagem de bloqueio (`Epic sadface: Sorry, this user has been locked out.`).
-- **Login com usuário inválido**: Validação de mensagem de credenciais incorretas.
-
-### 🛍️ 2. Home e Checkout (`cypress/e2e/home.cy.js`)
-- **Adicionar item ao carrinho**: Validação da visibilidade do produto na vitrine, inclusão no carrinho e verificação da quantidade e nome no carrinho de compras.
-- **Fluxo completo de compra (End-to-End)**:
-  1. Login do usuário;
-  2. Adição do produto ao carrinho com validação de preço;
-  3. Preenchimento dos dados do comprador no checkout;
-  4. Validação do resumo do pedido (método de pagamento e subtotal);
-  5. Conclusão da ordem de compra e retorno à página inicial.
+```text
+Status Geral: [█████████░░░░░░░░░░░░░░░░░] 35.1% (13 de 37 cenários)
+• Autenticação (Login)  : 100% (9/9)   🟢 CONCLUÍDO
+• Catálogo e Detalhes   : 37.5% (3/8)  🟡 EM ANDAMENTO
+• Checkout e Compra     : 10.0% (1/10) ⚪ INICIADO
+• Carrinho de Compras   : 0.0%  (0/5)  ⚪ PLANEJADO
+• Menu Lateral e Sessão : 0.0%  (0/5)  ⚪ PLANEJADO
+```
 
 ---
 
-## 💡 Boas Práticas Aplicadas
+## 🎯 Cenários de Teste Automatizados
 
-- **Especificação Viva em BDD (Gherkin)**: Matriz de cenários estruturada em formato BDD no arquivo `CENARIOS_BDD.md`, servindo de guia funcional para a automação.
-- **Seletores Baseados em Atributos de Teste**: Priorização de seletores com `[data-test="..."]`, garantindo robustez e imunidade a alterações de estilo CSS.
-- **Custom Commands**: Centralização de fluxos repetitivos no arquivo `commands.js`:
-  - `cy.goPage()`: Navegação para a URL base.
-  - `cy.loginUser(user, password)`: Fluxo de autenticação reutilizável.
-  - `cy.pageIsVisible()`: Validação da exibição da listagem de produtos.
-  - `cy.addItemCart(quantity, price)`: Inclusão e validação parametrizada de itens no carrinho.
-- **Asserções Encadeadas**: Uso idiomático do Chai/Mocha (`.should().and()`) para validações atômicas e declarativas.
+### 🔐 1. Autenticação e Segurança ([`cypress/e2e/login.cy.js`](./cypress/e2e/login.cy.js)) - 100%
+- **CT-01**: Login com credenciais válidas e validação de redirecionamento.
+- **CT-02**: Login com usuário bloqueado (`LOCKED_USER`).
+- **CT-03**: Login com usuário inexistente (`INVALID_USER`).
+- **CT-04**: Login com senha incorreta e usuário válido.
+- **CT-05**: Tentativa de login com campo *Username* vazio (`USERNAME_REQUIRED`).
+- **CT-06**: Tentativa de login com campo *Password* vazio (`PASSWORD_REQUIRED`).
+- **CT-07**: Tentativa de login com ambos os campos em branco.
+- **CT-08**: Tentativa de acesso direto à URL protegida (`/inventory.html`) sem sessão ativa, com tratamento de status HTTP e verificação de bloqueio.
+- **CT-09**: Autenticação com perfil de lentidão severa (`performance_glitch_user`), utilizando timeouts dinâmicos (`{ timeout: 10000 }`) sem esperas estáticas.
+
+### 📦 2. Catálogo e Vitrine ([`cypress/e2e/home.cy.js`](./cypress/e2e/home.cy.js))
+- **CT-HM-01**: Visualização completa da vitrine validando a presença dos 6 produtos e inspecionando imagem, texto e barra de preços de cada item via laço `.each()` e `cy.wrap()`.
+- **CT-HM-02**: Navegação para a página de detalhes através do título do produto (*Sauce Labs Backpack*), conferindo rota, nome, descrição, preço e retorno à vitrine.
+- **CT-HM-03**: Navegação para a página de detalhes através de clique na imagem usando seletor semântico de acessibilidade (`img[alt="..."]`) e validação do botão de compra.
+
+### 💳 3. Checkout e Transações ([`cypress/e2e/checkout.cy.js`](./cypress/e2e/checkout.cy.js))
+- **CT-CHK-01**: Fluxo completo de compra de ponta a ponta (*Happy Path*): login $\rightarrow$ inclusão de produto com validação de valor $\rightarrow$ preenchimento de endereço de entrega $\rightarrow$ conferência de subtotal $\rightarrow$ finalização com sucesso.
+
+---
+
+## 💡 Boas Práticas e Padrões Aplicados
+
+- **Especificação Viva em BDD (Gherkin)**: Criação de arquivos `.feature` na pasta `cenarios/` com mapeamento de regras funcionais e comportamentos esperados.
+- **Centralização de Constantes (Helpers)**:
+  - [`messages.js`](./cypress/support/messages.js): Dicionário de mensagens de erro do sistema (`LOGIN_MESSAGES`), eliminando *magic strings*.
+  - [`routes.js`](./cypress/support/routes.js): Mapeamento centralizado de rotas e URLs da aplicação (`ROUTES`).
+- **Comandos Customizados (Custom Commands)**:
+  - `cy.loginUser(user, password)`: Tratamento com operadores ternários para simular campos em branco sem quebrar o `.type()`.
+  - `cy.goPage(url)`: Navegação configurada com `{ failOnStatusCode: false }` para contornar limitações de SPA no GitHub Pages.
+  - `cy.pageIsVisible()` e `cy.addItemCart(quantity, price)`: Reutilização de passos frequentes.
+- **Retry-ability e Ausência de Waits Estáticos**: Zero uso de `cy.wait(tempo)`. Todos os cenários assíncronos e lentos utilizam a capacidade de repetição nativa do Cypress.
+- **Tipagem Global com `jsconfig.json`**: Configuração na raiz para autocompletar IntelliSense em todos os arquivos sem poluir o código com diretivas repetitivas.
+- **Seletores Baseados em `data-test` e Acessibilidade**: Priorização de seletores de teste e atributos semânticos (`alt`, `data-test`, `name`).
 
 ---
 
@@ -47,25 +67,29 @@ Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma
 
 ```plaintext
 E2ESwagLabs/
-├── cypress/
-│   ├── e2e/
-│   │   ├── login.cy.js        # Testes de autenticação
-│   │   └── home.cy.js         # Testes de vitrine, carrinho e checkout
-│   ├── fixtures/              # Massas de dados (quando aplicável)
-│   └── support/
-│       ├── commands.js        # Comandos customizados reutilizáveis
-│       └── e2e.js             # Configurações globais de suporte
 ├── cenarios/                  # Especificação BDD e Regras de Negócio
-│   ├── REGRAS_E_SISTEMA.md    # Documento de regras, rotas e perfis de usuário
+│   ├── REGRAS_E_SISTEMA.md    # Documento de regras funcionais, rotas e perfis
 │   ├── 01_autenticacao.feature
 │   ├── 02_catalogo_produtos.feature
 │   ├── 03_carrinho.feature
 │   ├── 04_checkout.feature
 │   └── 05_menu_e_sessao.feature
-├── PROGRESSO_AUTOMACAO.md     # Checklist e métricas de cobertura dos testes
-├── CYPRESS_ESTUDOS.md         # Documento detalhado de conceitos e aprendizados
-├── cypress.config.js          # Configurações do Cypress
-├── package.json               # Dependências e scripts de execução
+├── cypress/
+│   ├── e2e/
+│   │   ├── login.cy.js        # Testes de autenticação e segurança
+│   │   ├── home.cy.js         # Testes de vitrine, catálogo e detalhes
+│   │   └── checkout.cy.js     # Testes de checkout e conclusão de compra
+│   ├── fixtures/              # Massas de dados
+│   └── support/
+│       ├── commands.js        # Comandos customizados reutilizáveis
+│       ├── messages.js        # Dicionário de mensagens de validação
+│       ├── routes.js          # Centralização das rotas do sistema
+│       └── e2e.js             # Configurações globais de suporte
+├── PROGRESSO_AUTOMACAO.md     # Dashboard com matriz de rastreabilidade de testes
+├── CYPRESS_ESTUDOS.md         # Guia técnico e anotações de aprendizado
+├── jsconfig.json              # Tipagem global do Cypress para VS Code
+├── cypress.config.js          # Configurações de execução do Cypress
+├── package.json               # Dependências e scripts npm
 ├── .gitignore                 # Arquivos ignorados pelo Git
 └── README.md                  # Documentação principal do repositório
 ```
@@ -75,7 +99,7 @@ E2ESwagLabs/
 ## 🚀 Como Executar o Projeto
 
 ### Pré-requisitos
-- [Node.js](https://nodejs.org/) instalado (versão 18 ou superior recomendada)
+- [Node.js](https://nodejs.org/) instalado (v18+)
 - Git instalado
 
 ### 1. Clonar o repositório
@@ -91,12 +115,12 @@ npm install
 
 ### 3. Executar os testes
 
-- **Modo Interativo (Interface Gráfica do Cypress):**
+- **Modo Interativo (Cypress Test Runner):**
   ```bash
   npm run cypress:open
   ```
 
-- **Modo Headless (Execução rápida via terminal):**
+- **Modo Headless (Execução via terminal):**
   ```bash
   npm test
   # ou
@@ -108,4 +132,4 @@ npm install
 ## 👤 Autor
 
 Desenvolvido por **Felipe Gabriel**  
-Projeto para portfólio de Qualidade de Software / Automação de Testes.
+Projeto prático para portfólio de Qualidade de Software / Automação de Testes E2E.
