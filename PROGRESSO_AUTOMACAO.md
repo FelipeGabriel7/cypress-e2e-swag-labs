@@ -8,13 +8,16 @@ Dashboard de acompanhamento da cobertura de testes ponta a ponta (E2E) no **Swag
 
 | Métrica | Valor | Indicador Visual |
 | :--- | :---: | :--- |
-| **Total de Cenários Mapeados** | **37** | Especificados em `cenarios/*.feature` |
-| 🟢 **Cenários Automatizados** | **18** | Testes validados e passando |
-| ⚪ **Cenários Pendentes** | **19** | Planejados para implementação |
-| 📈 **Taxa de Cobertura Atual** | **48.6%** | `18 / 37 cenários concluídos` |
+| **Total de Cenários Mapeados** | **40** | Especificados em `cenarios/*.feature` |
+| 🟢 **Cenários Automatizados e Validados** | **18** | Testes anteriores validados e passando |
+| 🟡 **Cenários Implementados, Validação Pendente** | **8** | Suíte de carrinho escrita; execução ainda não confirmada |
+| 🔵 **Cenários em Andamento** | **1** | Happy path do checkout ainda não validado |
+| ⚪ **Cenários Pendentes** | **13** | Planejados para implementação |
+| 📈 **Cobertura Validada** | **45%** | `18 / 40 cenários` |
 
 ```text
-Progresso Atual: [█████████████░░░░░░░░░░░░] 48.6% Concluído
+Progresso validado: [███████████░░░░░░░░░░░░░] 45% (18/40)
+Incluindo implementação ainda não validada: 65% (26/40)
 ```
 
 ---
@@ -24,8 +27,8 @@ Progresso Atual: [█████████████░░░░░░░�
 ```text
 [1] Autenticação (Login)       : [████████████████████] 100% (9/9)   🟢 COMPLETO
 [2] Catálogo & Detalhes (Home) : [████████████████████] 100% (8/8)   🟢 COMPLETO
-[3] Checkout & Pedidos         : [██░░░░░░░░░░░░░░░░░░] 10.0% (1/10) ⚪ INICIADO
-[4] Carrinho de Compras        : [░░░░░░░░░░░░░░░░░░░░] 0.0%  (0/5)  ⚪ PENDENTE
+[3] Checkout & Pedidos         : [░░░░░░░░░░░░░░░░░░░░] 0% validado (0/10); 1 em andamento 🔵
+[4] Carrinho de Compras        : [████████████████████] 8/8 implementados, aguardam validação 🟡
 [5] Menu Lateral & Sessão      : [░░░░░░░░░░░░░░░░░░░░] 0.0%  (0/5)  ⚪ PENDENTE
 ```
 
@@ -68,11 +71,11 @@ Progresso Atual: [█████████████░░░░░░░�
 
 ## 💳 3. Checkout e Transações (`04_checkout.feature`)
 > **Arquivo de Teste:** [`cypress/e2e/checkout.cy.js`](file:///e:/Estudos/Cypress/E2ESwagLabs/cypress/e2e/checkout.cy.js)  
-> **Status:** ⚪ **10% Automatizado** (1 de 10 cenários)
+> **Status:** 🔵 **Em andamento** (0 de 10 cenários validados; CT-CHK-01 ainda não passou)
 
 | ID | Tipo | Cenário BDD | Validação Realizada | Status |
 | :---: | :---: | :--- | :--- | :---: |
-| **CT-CHK-01** | `E2E / Smoke`| Fluxo de compra completo (Happy Path) | Do carrinho à tela de confirmação (`Thank you for your order!`) | 🟢 Concluído |
+| **CT-CHK-01** | `E2E / Smoke`| Fluxo de compra completo (Happy Path) | Ainda não alcança/valida o fluxo completo; teste temporariamente comentado durante investigação | 🔵 Em andamento |
 | **CT-CHK-02** | `Validação` | Checkout com First Name em branco | Erro: `Error: First Name is required` | ⚪ Pendente |
 | **CT-CHK-03** | `Validação` | Checkout com Last Name em branco | Erro: `Error: Last Name is required` | ⚪ Pendente |
 | **CT-CHK-04** | `Validação` | Checkout com Postal Code em branco | Erro: `Error: Postal Code is required` | ⚪ Pendente |
@@ -86,16 +89,21 @@ Progresso Atual: [█████████████░░░░░░░�
 ---
 
 ## 🛒 4. Carrinho de Compras (`03_carrinho.feature`)
-> **Arquivo Alvo:** `cypress/e2e/carrinho.cy.js`  
-> **Status:** ⚪ **0% Automatizado** (0 de 5 cenários)
+> **Arquivo de Teste:** [`cypress/e2e/carrinho.cy.js`](file:///e:/Estudos/Cypress/E2ESwagLabs/cypress/e2e/carrinho.cy.js)  
+> **Status:** 🟡 **8 cenários implementados; execução/resultado ainda não confirmado**
 
 | ID | Tipo | Cenário BDD | Comportamento Esperado | Status |
 | :---: | :---: | :--- | :--- | :---: |
-| **CT-CAR-01** | `Smoke` | Adicionar item ao carrinho pela vitrine | Botão alterna para `Remove` e badge exibe `1` | ⚪ Pendente |
-| **CT-CAR-02** | `Funcional` | Adicionar múltiplos produtos | Contador dinâmico do badge refletindo a soma correta | ⚪ Pendente |
-| **CT-CAR-03** | `Remoção` | Remover item pela vitrine | Botão restaura para `Add to cart` e remove badge | ⚪ Pendente |
-| **CT-CAR-04** | `Remoção` | Remover item de dentro da página do carrinho | Item excluído do DOM e badge decrementado | ⚪ Pendente |
-| **CT-CAR-05** | `Persistência`| Manter carrinho após recarregar página (F5) | Persistência de estado no storage do navegador | ⚪ Pendente |
+| **CT-CAR-01** | `Smoke` | Adicionar item ao carrinho pela vitrine | Badge e botão do produto refletem a adição | 🟡 Implementado |
+| **CT-CAR-02** | `Funcional` | Adicionar múltiplos produtos | Badge exibe `3` | 🟡 Implementado |
+| **CT-CAR-03** | `Detalhes` | Adicionar produto pela tela de detalhes | Badge e botão refletem a adição ao voltar à vitrine | 🟡 Implementado |
+| **CT-CAR-04** | `Remoção` | Remover item pela vitrine | Botão restaura para `Add to cart` e badge desaparece | 🟡 Implementado |
+| **CT-CAR-05** | `Remoção` | Remover item de dentro da página do carrinho | Item removido, outro preservado e badge decrementado | 🟡 Implementado |
+| **CT-CAR-06** | `Navegação` | Retornar às compras pelo botão `Continue Shopping` | Redirecionamento para a vitrine | 🟡 Implementado |
+| **CT-CAR-07** | `Persistência` | Manter carrinho após recarregar a página | Badge permanece com `2` após reload | 🟡 Implementado |
+| **CT-CAR-08** | `Borda` | Acessar carrinho vazio | URL do carrinho, nenhum item e badge ausente | 🟡 Implementado |
+
+> **Ponto de atenção:** CT-CAR-07 está nomeado como finalização/checkout no código, mas valida persistência após recarregar. Alinhar o título antes de considerar a rastreabilidade concluída. A execução do Cypress deve ser confirmada para promover esses cenários de implementados para validados.
 
 ---
 

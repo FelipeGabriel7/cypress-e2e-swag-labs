@@ -12,17 +12,22 @@ Cypress.Commands.add("pageIsVisible", () => {
   cy.get('[data-test="inventory-container"]').should("be.visible");
 });
 
-Cypress.Commands.add("addItemCart", (quantity = 1, price = 0) => {
-  cy.contains(".inventory_item", "Sauce Labs Backpack").should("be.visible");
-  cy.get("#add-to-cart-sauce-labs-backpack").click();
-  cy.get('[data-test="shopping-cart-link"]').click();
-  cy.get('[data-test="inventory-item-name"]').should("be.visible");
-  cy.get('[data-test="item-quantity"]').should("have.text", quantity);
+Cypress.Commands.add("addItemCart", (productName) => {
+  cy.contains(".inventory_item", productName)
+    .should("be.visible")
+    .within(() => {
+      cy.get('[data-test^="add-to-cart"]').click();
+    });
+});
 
-  if (price !== 0) {
-    const convert = "$" + price;
-    cy.get('[data-test="inventory-item-price"]')
-      .should("be.visible")
-      .and("have.text", convert);
-  }
+Cypress.Commands.add("OpenCart", () => {
+  cy.get(".shopping_cart_link").click();
+});
+
+Cypress.Commands.add("removeItemCart", (productName) => {
+  cy.contains(".inventory_item", productName)
+    .should("be.visible")
+    .within(() => {
+      cy.get('[data-test^="remove"]').click();
+    });
 });

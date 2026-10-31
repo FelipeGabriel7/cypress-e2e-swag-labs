@@ -3,4 +3,5 @@ export const ROUTES = {
   ITEM_PAGE: "https://www.saucedemo.com/inventory-item.html?id=4",
   OTHER_ITEM: "https://www.saucedemo.com/inventory-item.html?id=0",
   LOGIN_PAGE: "https://www.saucedemo.com/",
+  CART_PAGE: "https://www.saucedemo.com/cart.html",
 };
