@@ -74,7 +74,7 @@ Progresso validado: [████████████████░░░�
 
 | ID | Tipo | Cenário BDD | Validação Realizada | Status |
 | :---: | :---: | :--- | :--- | :---: |
-| **CT-CHK-01** | `E2E / Smoke`| Fluxo de compra completo (Happy Path) | Ainda não alcança/valida o fluxo completo; teste temporariamente comentado durante investigação | 🔵 Em andamento |
+| **CT-CHK-01** | `E2E / Smoke`| Fluxo de compra completo (Happy Path) | Última execução registrada falhou ao localizar `.checkout_button`; teste atualmente comentado e fluxo completo ainda não validado | 🔵 Em andamento |
 | **CT-CHK-02** | `Validação` | Checkout com First Name em branco | Erro: `Error: First Name is required` | ⚪ Pendente |
 | **CT-CHK-03** | `Validação` | Checkout com Last Name em branco | Erro: `Error: Last Name is required` | ⚪ Pendente |
 | **CT-CHK-04** | `Validação` | Checkout com Postal Code em branco | Erro: `Error: Postal Code is required` | ⚪ Pendente |
@@ -84,6 +84,8 @@ Progresso validado: [████████████████░░░�
 | **CT-CHK-08** | `Cálculo` | Validação matemática de Subtotal + Tax = Total | Conferência de centavos e impostos arredondados | ⚪ Pendente |
 | **CT-CHK-09** | `Borda` | Checkout com carrinho vazio | Integridade da tela de resumo com valor `$0.00` | ⚪ Pendente |
 | **CT-CHK-10** | `Borda` | Defeito no sobrenome com `problem_user` | Verificação do bloqueio de digitação no campo | ⚪ Pendente |
+
+> **Nota sobre o relatório Allure:** a falha exibida para `.checkout_button` pertence a uma execução anterior, quando o teste ainda estava ativo. Ela não representa uma execução da versão atualmente comentada do `checkout.cy.js`.
 
 ---
 
