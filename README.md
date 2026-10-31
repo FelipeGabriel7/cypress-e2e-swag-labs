@@ -4,7 +4,7 @@ Projeto de automação de testes End-to-End (E2E) desenvolvido para a plataforma
 
 [![Cypress](https://img.shields.io/badge/Cypress-16.2.0-04C38C?style=for-the-badge&logo=cypress&logoColor=white)](https://www.cypress.io/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/)
-[![Status](https://img.shields.io/badge/Cobertura_E2E-48.6%25_(18/37)-blue?style=for-the-badge)](./PROGRESSO_AUTOMACAO.md)
+[![Status](https://img.shields.io/badge/Cobertura_E2E-65%25_(26/40)-blue?style=for-the-badge)](./PROGRESSO_AUTOMACAO.md)
 [![Allure Report](https://img.shields.io/badge/Report-Allure-F28D1A?style=for-the-badge&logo=qameta&logoColor=white)](https://qameta.io/)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](./.github/workflows/e2e-tests.yml)
 
@@ -16,11 +16,11 @@ Os cenários de teste são baseados em especificações vivas escritas em **Gher
 Para conferir a matriz completa com todos os casos de teste, acesse o [**PROGRESSO_AUTOMACAO.md**](./PROGRESSO_AUTOMACAO.md).
 
 ```text
-Status Geral: [█████████████░░░░░░░░░░░░] 48.6% (18 de 37 cenários)
+Status Geral: [████████████████░░░░░░░░] 65% (26 de 40 cenários validados)
 • Autenticação (Login)  : 100% (9/9)   🟢 CONCLUÍDO
 • Catálogo e Detalhes   : 100% (8/8)   🟢 CONCLUÍDO
-• Checkout e Compra     : 10.0% (1/10) ⚪ INICIADO
-• Carrinho de Compras   : 0.0%  (0/5)  ⚪ PLANEJADO
+• Checkout e Compra     : 0% validado (0/10); 1 em andamento 🔵
+• Carrinho de Compras   : 100% (8/8)  🟢 CONCLUÍDO
 • Menu Lateral e Sessão : 0.0%  (0/5)  ⚪ PLANEJADO
 ```
 
@@ -80,8 +80,18 @@ O projeto utiliza a integração oficial **`allure-cypress`** da Qameta Software
 - **CT-HM-07**: Ordenação por **Nome de A a Z** (*Name A to Z*), restaurando a ordem alfabética padrão da vitrine.
 - **CT-HM-08 (Borda / Defeito Conhecido)**: Validação de imagens quebradas no perfil `problem_user`, inspecionando o atributo `src` com `.should('have.attr', 'src').and('include', 'sl-404')`.
 
-### 💳 3. Checkout e Transações ([`cypress/e2e/checkout.cy.js`](./cypress/e2e/checkout.cy.js))
-- **CT-CHK-01**: Fluxo completo de compra de ponta a ponta (*Happy Path*): login $\rightarrow$ inclusão de produto com validação de valor $\rightarrow$ preenchimento de endereço de entrega $\rightarrow$ conferência de subtotal $\rightarrow$ finalização com sucesso.
+### 💳 3. Checkout e Transações ([`cypress/e2e/checkout.cy.js`](./cypress/e2e/checkout.cy.js)) - Em andamento
+- **CT-CHK-01**: Fluxo completo de compra (*Happy Path*) ainda não validado. O teste está temporariamente comentado; a última execução registrada no Allure falhou ao localizar `.checkout_button`.
+
+### 🛒 4. Carrinho de Compras ([`cypress/e2e/carrinho.cy.js`](./cypress/e2e/carrinho.cy.js)) - 100% Validado
+- **CT-CAR-01**: Adição de produto pela vitrine e validação do badge e botão.
+- **CT-CAR-02**: Adição de múltiplos produtos e validação do contador.
+- **CT-CAR-03**: Adição de produto pela tela de detalhes.
+- **CT-CAR-04**: Remoção de produto pela vitrine.
+- **CT-CAR-05**: Remoção de produto pela página do carrinho, mantendo os demais itens.
+- **CT-CAR-06**: Retorno à vitrine pelo botão `Continue Shopping`.
+- **CT-CAR-07**: Persistência dos itens após recarregar a página.
+- **CT-CAR-08**: Acesso ao carrinho vazio, sem itens ou badge.
 
 ---
 
@@ -95,7 +105,7 @@ O projeto utiliza a integração oficial **`allure-cypress`** da Qameta Software
 - **Comandos Customizados (Custom Commands)**:
   - `cy.loginUser(user, password)`: Tratamento com operadores ternários para simular campos em branco sem quebrar o `.type()`.
   - `cy.goPage(url)`: Navegação configurada com `{ failOnStatusCode: false }` para contornar limitações de SPA no GitHub Pages.
-  - `cy.pageIsVisible()` e `cy.addItemCart(quantity, price)`: Reutilização de passos frequentes.
+  - `cy.pageIsVisible()`, `cy.addItemCart(productName)` e `cy.removeItemCart(productName)`: Reutilização de ações frequentes de navegação, adição e remoção de produtos.
 - **Retry-ability e Ausência de Waits Estáticos**: Zero uso de `cy.wait(tempo)`. Todos os cenários assíncronos e lentos utilizam a capacidade de repetição nativa do Cypress.
 - **Tipagem Global com `jsconfig.json`**: Configuração na raiz para autocompletar IntelliSense em todos os arquivos sem poluir o código com diretivas repetitivas.
 - **Seletores Baseados em `data-test` e Acessibilidade**: Priorização de seletores de teste e atributos semânticos (`alt`, `data-test`, `name`).
@@ -120,7 +130,8 @@ E2ESwagLabs/
 │   ├── e2e/
 │   │   ├── login.cy.js        # Testes de autenticação e segurança (9 cenários)
 │   │   ├── home.cy.js         # Testes de vitrine, catálogo e detalhes (8 cenários)
-│   │   └── checkout.cy.js     # Testes de checkout e conclusão de compra (1 cenário)
+│   │   ├── carrinho.cy.js     # Testes de carrinho (8 cenários)
+│   │   └── checkout.cy.js     # Checkout (em andamento; cenário atual comentado)
 │   ├── fixtures/              # Massas de dados
 │   └── support/
 │       ├── commands.js        # Comandos customizados reutilizáveis
